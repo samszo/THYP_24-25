@@ -57,7 +57,28 @@
                 .data(d => Object.values(d))
                 .enter()
                 .append("td")
-                .text(d => d)
+                .html((d,i) => {
+                    let h = "";
+                    switch (i) {
+                        case 1:
+                            h = '<h2>'+d+'</h2>'                                                       
+                            break;
+                        case 5:
+                            let r = URL.parse(d).pathname.split('/');
+                            //https://github.com/imane-el-rhazi/Condidature-d-alternance
+                            //https://imane-el-rhazi.github.io/Candidature-d-alternance/
+                            h = '<a target="_blank" href="'+d+'">GitHub</a> - ';
+                            h += '<a target="_blank" href="https://'+r[1]+'.github.io/'+r[2]+'">GitHub Pages</a> - ';
+                            h += '<a target="_blank" href="https://'+r[1]+'.github.io/'+r[2]+'/flux.md">flux.md</a> - ';
+                            h += '<a target="_blank" href="https://'+r[1]+'.github.io/'+r[2]+'/data.html">data.html</a>';                            
+                            
+                        break;
+                        default:
+                            h=d;
+                            break;
+                    }
+                    return h;
+                })
                 .on('click',(e,d)=>{
                     e.stopPropagation()
                     console.log(d);
