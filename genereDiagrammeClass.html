@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagramme avec D3.js et Mermaid.js</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <h1>Diagramme avec D3.js et Mermaid.js</h1>
+    <div id="d3-container"></div>
+    <div class="mermaid">
+        graph TD;
+        A-->B;
+        A-->C;
+        B-->D;
+        C-->D;
+    </div>
+    <script>
+        //récupère la liste des ressource template
+        let url = "http://localhost/omk_thyp_24-25/api/resource_templates"
+        d3.json(url).then(data=>{
+            /*
+            pour chaque ressource template 
+            => récupérer la définition 
+            => créer le code d'une class :
+                class Duck{
+                +String beakColor
+                }
+            */
+        })
+    </script>
+</body>
+</html>
