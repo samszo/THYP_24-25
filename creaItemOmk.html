@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer des items avec l'api OMK</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Créer des items avec l'api OMK</h1>
+    </header>
+    <main>
+        <p>Ceci est un exemple de page HTML.</p>
+    </main>
+    <footer>
+        <p>&copy; 2023 Mon Site Web</p>
+    </footer>
+
+    <script type="module">
+        import {auth} from './modules/auth.js';
+
+        let a = new auth({
+            mail:'samszon@gmail.com',
+            apiOmk:'http://localhost/omk_thyp_24-25/api/',
+            ident: 'GZgdzV1dTgu8rXnbIevyIb08DHXu4gal',
+            key:'qB0zaRMNa53Uec7Are9surMlpk6LniAi',
+        })
+
+    </script>
+</body>
+</html>
