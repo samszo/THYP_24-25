@@ -12,7 +12,8 @@
         <h1>Créer des items avec l'api OMK</h1>
     </header>
     <main>
-        <p>Ceci est un exemple de page HTML.</p>
+        <button id="btnCreateItem">Créer un item</button>
+        <div id="resultCrea"></div>
     </main>
     <footer>
         <p>&copy; 2023 Mon Site Web</p>
@@ -27,6 +28,18 @@
             ident: 'GZgdzV1dTgu8rXnbIevyIb08DHXu4gal',
             key:'qB0zaRMNa53Uec7Are9surMlpk6LniAi',
         })
+
+        d3.select("#btnCreateItem").on("click",creaItem);
+
+        function creaItem(){
+            let data = [];
+            data['o:resource_class']="foaf:Person";
+            data['o:resource_template']='Etudiant';
+            data['foaf:familyName']='Machin';
+            a.omk.createItem(data,d=>{
+                d3.select('#resultCrea').text(JSON.stringify(d));
+            });
+        }
 
     </script>
 </body>
