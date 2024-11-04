@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer des items avec l'api OMK</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Créer des items avec l'api OMK</h1>
+    </header>
+    <main>
+        <ul id="listeEtudiants"></ul>
+    </main>
+    <footer>
+        <p>&copy; 2023 Mon Site Web</p>
+    </footer>
+
+    <script type="module">
+        import {auth} from './modules/auth.js';
+
+        let a = new auth({
+            mail:'samszon@gmail.com',
+            apiOmk:'http://localhost/omk_thyp_24-25/api/',
+            ident: 'GZgdzV1dTgu8rXnbIevyIb08DHXu4gal',
+            key:'qB0zaRMNa53Uec7Are9surMlpk6LniAi',
+        })
+
+        let url = "http://localhost/omk_thyp_24-25/api/items?resource_class_id=94";
+        d3.json(url).then(data=>{
+            let eLi = d3.select('#listeEtudiants').selectAll('li')
+            .data(data).enter().append('li')
+                .text(d=>d['o:title']);
+            eLi.append("button").text("présent").on('click',present);
+            eLi.append("button").text("abscent").on('click',abscent);
+        })
+
+        function abscent(e,d){
+            present(e,d,true);
+        }
+
+        function present(e,d,absc=false){
+            let data = [], titre = absc ? "Abscence" : "Présence";
+            data['o:resource_class']="dctype:Event";
+            data['o:resource_template']='Présence';
+            data['dcterms:title'] = titre+' de '+d['o:title']+' à ' + new Date().toLocaleString();
+            data['fup8:hasEC'] = 'langage du web';
+            data['fup8:hasEtudiant'] = {'rid':d['o:id']};
+            data['dcterms:valid'] = new Date().toLocaleString();
+                        
+            a.omk.createItem(data,i=>{
+                d3.select('#resultCrea').text(JSON.stringify(i));
+            });
+        }
+
+    </script>
+</body>
+</html>
