@@ -20,13 +20,9 @@
 
     <script type="module">
         import {auth} from './modules/auth.js';
+        import {pa} from './modules/authParams.js';
 
-        let a = new auth({
-            mail:'samszon@gmail.com',
-            apiOmk:'http://localhost/omk_thyp_24-25/api/',
-            ident: 'GZgdzV1dTgu8rXnbIevyIb08DHXu4gal',
-            key:'qB0zaRMNa53Uec7Are9surMlpk6LniAi',
-        })
+        let a = new auth(pa);
 
         let url = "http://localhost/omk_thyp_24-25/api/items?resource_class_id=94";
         d3.json(url).then(data=>{
