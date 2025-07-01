@@ -3,36 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagramme avec D3.js et Mermaid.js</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Diagramme de Classe Mermaid Dynamique</title>
     <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true });
+        import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+        mermaid.initialize({ startOnLoad: false });
+        window.mermaid = mermaid;
     </script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+   
 </head>
 <body>
-    <h1>Diagramme avec D3.js et Mermaid.js</h1>
-    <div id="d3-container"></div>
-    <div class="mermaid">
-        graph TD;
-        A-->B;
-        A-->C;
-        B-->D;
-        C-->D;
-    </div>
-    <script>
-        //récupère la liste des ressource template
-        let url = "http://localhost/omk_thyp_24-25/api/resource_templates"
-        d3.json(url).then(data=>{
-            /*
-            pour chaque ressource template 
-            => récupérer la définition 
-            => créer le code d'une class :
-                class Duck{
-                +String beakColor
-                }
-            */
-        })
-    </script>
+
+<div class="mermaid" id="classDiagram"></div>
+<script>
+const apiUrl = "https://api.github.com/repos/imane-el-rhazi/Candidature-d-alternance/contents/data/rt";
+let mermaidText = "classDiagram\n";
+
+d3.json(apiUrl)
+    .then(files => {
+        const jsonFiles = files.filter(file => file.name.endsWith(".json"));
+        const filePromises = jsonFiles.map(file => d3.json(file.download_url));
+        Promise.all(filePromises)
+            .then(fileContents => {
+                fileContents.forEach(data => {
+                    mermaidText += `class ${data['o:label']} {\n`;
+                    const properties = data["o:resource_template_property"];
+                    properties.forEach(prop => {
+                        const label = prop.label;
+                        const localName = prop.local_name;
+                        const type = (localName === "aUtiliseMobile" || localName === "estInteresséParEcommerce") ? "Boolean" : "String";
+                        mermaidText += `    +${type} ${label}\n`;
+                    });
+                    mermaidText += "}\n";
+                });
+                document.getElementById("classDiagram").innerHTML = mermaidText;
+                mermaid.init(undefined, document.querySelectorAll(".mermaid"));
+            })
+            .catch(error => {
+                console.log("Erreur lors de la récupération des données des fichiers JSON :", error);
+            });
+    })
+    .catch(error => {
+        console.log("Erreur lors de la récupération des fichiers depuis l'API GitHub :", error);
+    });
+</script>
+
 </body>
 </html>
